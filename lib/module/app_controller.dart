@@ -26,7 +26,7 @@ mixin AppController {
 
   /// Doc : Avoid using with navigating to new page. Bcs snackbar loose his context.
   /// @author rizkyagungramadhan@gmail.com on 01-Apr-2022, Fri, 18:10.
-  showInformationSnackbar(String message) {
+  showInformationSnackbar(dynamic message) {
     if (Get.isSnackbarOpen) return;
     Get.snackbar('', '',
         snackPosition: SnackPosition.BOTTOM,
@@ -40,7 +40,7 @@ mixin AppController {
         ),
         messageText: Center(
           child: Text(
-            message,
+            message.toString(),
             style: AppTextStyle.regular(),
           ),
         ),

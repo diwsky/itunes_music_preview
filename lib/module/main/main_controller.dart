@@ -38,7 +38,7 @@ class MainController extends GetxController with AppController {
       });
     } catch (error, stacktrace) {
       isLoading.value = false;
-      showInformationSnackbar(error.toString());
+      showInformationSnackbar(error);
       if (error is! AppException && kDebugMode) {
         printInfo(info: stacktrace.toString());
       }
