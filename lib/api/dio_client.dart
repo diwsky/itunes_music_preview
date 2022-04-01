@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
+import 'package:itunes_music_preview/module/repository.dart';
 import 'package:itunes_music_preview/utility/app_error_utility.dart';
 import 'package:itunes_music_preview/utility/extension/response_ext.dart';
 import 'package:itunes_music_preview/utility/response_exception.dart';
@@ -8,96 +8,47 @@ import 'package:itunes_music_preview/utility/response_exception.dart';
 /// on 4/1/2022.
 
 class DioClient {
-  // dio instance
   final Dio _dio;
 
-  // injecting dio instance
-  DioClient([Dio? dio]) : _dio = dio ?? Dio();
+  const DioClient(this._dio);
 
-  Future<dynamic> get(
-    String uri, {
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-    Map<String, dynamic>? headers,
-    CancelToken? cancelToken,
-    ProgressCallback? onReceiveProgress,
-  }) async {
+  /// Doc : Use it for [GET] method.
+  /// Use [options] if you want to override [BaseOptions] provided in [Repository]
+  /// @author rizkyagungramadhan@gmail.com on 01-Apr-2022, Fri, 21:18.
+  Future<dynamic> get(String uriPath,
+      {Map<String, dynamic>? queryParameters, Options? options}) async {
     try {
-      Map<String, dynamic>? tokenHeader;
-      // if(headers != null) {
-      //   tokenHeader = await validateUserSession(headers);
-      // }
-
-      _dio.options.connectTimeout = 10 * 1000;
-      _dio.options.receiveTimeout = 10 * 1000;
-      final Response response = await _dio.get(
-        uri,
-        queryParameters: queryParameters,
-        options: options ??
-            Options(
-              headers: headers,
-              // headers: tokenHeader ?? headers,
-              followRedirects: false,
-              receiveDataWhenStatusError: true,
-              validateStatus: (status) => (status ?? 200) <= 503,
-            ),
-        cancelToken: cancelToken,
-        onReceiveProgress: onReceiveProgress,
-      );
+      final Response response = await _dio.get(uriPath,
+          queryParameters: queryParameters, options: options);
       return response.parse();
     } on DioError catch (e) {
-      printInfo(info: e.message);
+      AppErrorUtility.printInfo(e.message);
       throw ResponseException(AppErrorUtility.handleError(e));
     } catch (e) {
-      printInfo(info: e.toString());
+      AppErrorUtility.printInfo(e);
       throw ResponseException(AppErrorUtility.handleError(e));
     }
   }
 
-  Future<dynamic> post(
-    String uri, {
-    data,
-    Map<String, dynamic>? queryParameters,
-    Map<String, dynamic>? headers,
-    Options? options,
-    CancelToken? cancelToken,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
-  }) async {
+  /// Doc : Use it for [POST] method.
+  /// Use [options] if you want to override [BaseOptions] provided in [Repository]
+  /// @author rizkyagungramadhan@gmail.com on 01-Apr-2022, Fri, 21:18.
+  Future<dynamic> post(String uriPath,
+      {data, Map<String, dynamic>? queryParameters, Options? options}) async {
     try {
-      // _dio.interceptors.add(AppInterceptor(headers));;
-
-      Map<String, dynamic>? tokenHeader;
-      // if(headers != null) {
-      //   tokenHeader = await validateUserSession(headers);
-      // }
-      _dio.options.connectTimeout = 10 * 1000;
-      _dio.options.receiveTimeout = 10 * 1000;
       final Response response = await _dio.post(
-        uri,
+        uriPath,
         data: data,
         queryParameters: queryParameters,
-        options: options ??
-            Options(
-              headers: headers,
-              // headers: tokenHeader ?? headers,
-              followRedirects: false,
-              receiveDataWhenStatusError: true,
-              validateStatus: (status) => (status ?? 200) <= 503,
-            ),
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
+        options: options,
       );
       return response.parse();
     } on DioError catch (e) {
-      printInfo(info: e.message);
+      AppErrorUtility.printInfo(e.message);
       throw ResponseException(AppErrorUtility.handleError(e));
     } catch (e) {
-      printInfo(info: e.toString());
+      AppErrorUtility.printInfo(e);
       throw ResponseException(AppErrorUtility.handleError(e));
     }
   }
 }
-
-extension DioClientExt on DioClient {}
