@@ -30,7 +30,7 @@ mixin AppController {
     if (Get.isSnackbarOpen) return;
     Get.snackbar('', '',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: CupertinoColors.systemGrey4,
+        backgroundColor: CupertinoColors.systemGrey6,
         titleText: Center(
           child: Text(
             "Information",

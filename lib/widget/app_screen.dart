@@ -14,12 +14,16 @@ class AppScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final _mainScreen = Container(
       color: AppColor.primary,
       child: SafeArea(
           child: Scaffold(
-        body: isUsingKeyboard ? KeyboardDismissOnTap(child: body) : body,
+        body: body,
       )),
     );
+
+    return isUsingKeyboard
+        ? KeyboardDismissOnTap(child: _mainScreen)
+        : _mainScreen;
   }
 }

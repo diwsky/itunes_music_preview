@@ -1,24 +1,30 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:itunes_music_preview/api/music/music_track_request.dart';
 import 'package:itunes_music_preview/api/music/music_track_response.dart';
+import 'package:itunes_music_preview/common/app_state.dart';
 import 'package:itunes_music_preview/module/app_controller.dart';
 import 'package:itunes_music_preview/module/repository.dart';
+import 'package:itunes_music_preview/utility/app_error_utility.dart';
 import 'package:itunes_music_preview/utility/app_exception.dart';
+import 'package:itunes_music_preview/utility/extension/string_ext.dart';
 
 /// Created by rizkyagungramadhan@gmail.com
 /// on 4/1/2022.
 
 class MainController extends GetxController with AppController {
   final _repository = Get.find<Repository>();
-  RxBool isLoading = false.obs;
   RxList results = RxList<MusicTrackResponse>();
   RxBool isConnectionAvailable = true.obs;
+  Rx<AppState> appState = AppState.idle.obs;
 
   search({required String artistName}) async {
     try {
-      if (isLoading.value) return;
-      isLoading.value = true;
+      ///Prevent this function called repetitively
+      if (appState.value == AppState.loading) return;
+      appState.value = AppState.loading;
+
+      ///Show search animation when [artistName] query was empty
+      if (artistName.isNullOrEmpty) return appState.value = AppState.idle;
 
       ///Validate connection availability
       await forceToConnected(isConnectionAvailable);
@@ -28,20 +34,17 @@ class MainController extends GetxController with AppController {
           .searchByArtistName(
               request: MusicTrackRequest(artistName: artistName))
           .then((response) {
-
         ///Validate response
         response.validate();
 
         ///Assign all response data when valid
         results.assignAll(response.data ?? []);
-        isLoading.value = false;
+        appState.value = AppState.completed;
       });
     } catch (error, stacktrace) {
-      isLoading.value = false;
+      appState.value = AppState.failed;
       showInformationSnackbar(error);
-      if (error is! AppException && kDebugMode) {
-        printInfo(info: stacktrace.toString());
-      }
+      if (error is! AppException) AppErrorUtility.printInfo(stacktrace);
     }
   }
 }
