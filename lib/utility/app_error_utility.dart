@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:get/get_utils/get_utils.dart';
 
 /// Created by rizkyagungramadhan@gmail.com
 /// on 4/1/2022.
@@ -38,5 +40,10 @@ class AppErrorUtility {
       errorDescription = "Oops something went wrong";
     }
     return errorDescription;
+  }
+
+  void print(dynamic error) {
+    if(!kDebugMode) return;
+    printInfo(info: error.toString());
   }
 }
