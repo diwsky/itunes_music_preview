@@ -45,7 +45,9 @@ dependencies:
   dio: ^4.0.6
 
   ## Widgets
+  cached_network_image: ^3.2.0
   lottie: ^1.2.2
+  skeletons: ^0.0.3
 
 
   # The following adds the Cupertino Icons font to your application.
