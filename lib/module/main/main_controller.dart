@@ -13,21 +13,29 @@ class MainController extends GetxController with AppController {
   final _repository = Get.find<Repository>();
   RxBool isLoading = false.obs;
   RxList results = RxList<MusicTrackResponse>();
+  RxBool isConnectionAvailable = true.obs;
 
   search({required String artistName}) async {
     try {
       if (isLoading.value) return;
       isLoading.value = true;
 
+      ///Validate connection availability
+      await forceToConnected(isConnectionAvailable);
+
+      ///Execute API Call
       return await _repository
           .searchByArtistName(
               request: MusicTrackRequest(artistName: artistName))
           .then((response) {
+
+        ///Validate response
         response.validate();
+
+        ///Assign all response data when valid
         results.assignAll(response.data ?? []);
         isLoading.value = false;
       });
-
     } catch (error, stacktrace) {
       isLoading.value = false;
       showInformationSnackbar(error.toString());
