@@ -9,27 +9,29 @@ part "music_track_response.g.dart";
 @JsonSerializable()
 class MusicTrackResponse {
 
-  String artistName;
-  String artistViewUrl;
-  String collectionName;
-  String collectionViewUrl;
-  String trackName;
-  String trackViewUrl;
+  final int trackId;
+  final String artistName;
+  final String artistViewUrl;
+  final String collectionName;
+  final String collectionViewUrl;
+  final String trackName;
+  final String trackViewUrl;
   @JsonKey(name: "previewUrl")
-  String? previewStreamUrl;
+  final String? previewStreamUrl;
   @JsonKey(name: "trackTimeMillis")
-  num? trackTimeInMillis;
+  final num? trackTimeInMillis;
   @JsonKey(name: "artworkUrl100")
-  String trackArtWorkUrl;
-  DateTime releaseDate;
+  final String trackArtWorkUrl;
+  final DateTime releaseDate;
   @JsonKey(name: "primaryGenreName")
-  String? genre;
-  dynamic trackPrice;
+  final String? genre;
+  final dynamic trackPrice;
   @JsonKey(name: "currency")
-  dynamic priceCurrency;
-  bool isStreamable;
+  final dynamic priceCurrency;
+  final bool isStreamable;
 
   MusicTrackResponse(
+      this.trackId,
       this.artistName,
       this.artistViewUrl,
       this.collectionName,

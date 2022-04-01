@@ -40,6 +40,7 @@ class AppDimen {
   static const iconSizeLarge = 20.0;
   static const iconSizeExtraLarge = 24.0;
   static const iconSizeExtraLarge2 = 28.0;
+  static const iconSizeExtraLarge3 = 32.0;
   static const iconSizeMax = 48.0;
   static const iconSizeMax2 = 56.0;
 

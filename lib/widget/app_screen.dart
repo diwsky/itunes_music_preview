@@ -18,6 +18,7 @@ class AppScreen extends StatelessWidget {
       color: AppColor.primary,
       child: SafeArea(
           child: Scaffold(
+        backgroundColor: Colors.white,
         body: body,
       )),
     );

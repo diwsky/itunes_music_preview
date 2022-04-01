@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:itunes_music_preview/style/app_color.dart';
@@ -17,7 +16,7 @@ class AppTheme {
             statusBarIconBrightness: Brightness.dark,
             statusBarBrightness: Brightness.light)),
     primaryColor: AppColor.primary,
-    backgroundColor: CupertinoColors.systemGrey6,
+    backgroundColor: Colors.white,
     colorScheme: ColorScheme.fromSwatch()
         .copyWith(secondary: AppColor.accent, primary: AppColor.primary),
   );

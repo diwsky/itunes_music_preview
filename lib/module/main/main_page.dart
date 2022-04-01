@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:itunes_music_preview/api/music/music_track_response.dart';
 import 'package:itunes_music_preview/common/app_state.dart';
 import 'package:itunes_music_preview/common/placeholder_type.dart';
 import 'package:itunes_music_preview/module/main/main_controller.dart';
 import 'package:itunes_music_preview/module/main/music_item_view.dart';
+import 'package:itunes_music_preview/module/main/music_player_view.dart';
 import 'package:itunes_music_preview/style/app_color.dart';
 import 'package:itunes_music_preview/utility/extension/widget_ext.dart';
 import 'package:itunes_music_preview/widget/app_screen.dart';
@@ -35,10 +37,10 @@ class MainPage extends StatelessWidget {
 
             ///Observable Widgets
             Expanded(
-              child: Obx(() => RefreshIndicator(
-                    onRefresh: () async => await _controller.search(
-                        artistName: searchTextController.text),
-                    child: (() {
+              child: RefreshIndicator(
+                onRefresh: () async => await _controller.search(
+                    artistName: searchTextController.text),
+                child: Obx(() => (() {
                       ///Manage state
 
                       if (!_controller.isConnectionAvailable.value) {
@@ -67,9 +69,28 @@ class MainPage extends StatelessWidget {
                         default:
                           return const SizedBox.shrink();
                       }
-                    }()),
-                  )),
-            )
+                    }())),
+              ),
+            ),
+
+            ///Music Player
+            Obx(() {
+              final selectedMusic = _controller.selectedMusic.value;
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(scale: animation, child: child);
+                },
+                child: selectedMusic is MusicTrackResponse
+                    ? MusicPlayerView(
+                        audioPlayer: _controller.audioPlayer,
+                        item: selectedMusic,
+                        onStopOrPause: _controller.results.refresh,
+                        onPlay: _controller.results.refresh,
+                      )
+                    : const SizedBox.shrink(),
+              );
+            })
           ],
         ));
   }
@@ -77,15 +98,26 @@ class MainPage extends StatelessWidget {
   Widget _buildMusicList() {
     return Column(
       children: [
-        ///Music List Item View
+        ///Build Music List Item View if not empty
         Expanded(
           child: _controller.results.isEmpty
               ? const PlaceholderWidget(type: PlaceholderType.noData)
               : ListView.builder(
                   padding: EdgeInsets.zero,
                   itemCount: _controller.results.length,
-                  itemBuilder: (_, position) => MusicItemView(
-                      item: _controller.results[position], onPressed: () {})),
+                  itemBuilder: (_, position) {
+                    final MusicTrackResponse item =
+                        _controller.results[position];
+                    final isPlaying =
+                        (_controller.selectedMusic.value?.trackId ?? 0) ==
+                            item.trackId;
+
+                    return MusicItemView(
+                      item: item,
+                      onPressed: () => _controller.playTrack(item),
+                      isPlaying: isPlaying && _controller.audioPlayer.playing,
+                    );
+                  }),
         ),
       ],
     );

@@ -8,6 +8,7 @@ part of 'music_track_response.dart';
 
 MusicTrackResponse _$MusicTrackResponseFromJson(Map<String, dynamic> json) =>
     MusicTrackResponse(
+      json['trackId'] as int,
       json['artistName'] as String,
       json['artistViewUrl'] as String,
       json['collectionName'] as String,
@@ -26,6 +27,7 @@ MusicTrackResponse _$MusicTrackResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$MusicTrackResponseToJson(MusicTrackResponse instance) =>
     <String, dynamic>{
+      'trackId': instance.trackId,
       'artistName': instance.artistName,
       'artistViewUrl': instance.artistViewUrl,
       'collectionName': instance.collectionName,
