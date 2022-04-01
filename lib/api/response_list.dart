@@ -17,8 +17,8 @@ class ResponseList<T> {
 
   ResponseList({this.total = 0, required this.data, this.status, this.message});
 
-  /// Doc : @param response should be Map<String, dynamic> for cast to be successful.
-  /// @author rizkyagungramadhan@gmail.com on 2021-12-13, Mon, 22:16.
+  /// Doc : [response] should be [Map<String, dynamic>] for cast to be successful.
+  /// @author rizkyagungramadhan@gmail.com on 2022-04-01, Mon, 16:55.
   factory ResponseList.fromJson(
       dynamic response, T Function(Object? json) fromJsonT) {
     if (response is! Map<String, dynamic>) throw AppException("Response should be in Map types");
@@ -28,6 +28,6 @@ class ResponseList<T> {
   String get errorMessage =>
       (data is String ? data as String : message) ??
       (status is int
-          ? "Oops something went error with code : $status"
+          ? "Oops something went wrong with error code : $status"
           : "Unknown error");
 }
