@@ -35,7 +35,7 @@ class SearchTextField extends StatelessWidget {
             controller: textEditingController,
             onChanged: onChanged,
             onFieldSubmitted: onSearch,
-            textInputAction: textInputAction,
+            textInputAction: textInputAction ?? TextInputAction.search,
             decoration: InputDecoration(
                 isDense: true,
                 hintText: placeholder,
