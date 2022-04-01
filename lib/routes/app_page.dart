@@ -9,6 +9,6 @@ class AppPage {
   const AppPage._();
 
   static final routes = [
-    GetPage(name: AppRoute.main, page: () => const MainPage())
+    GetPage(name: AppRoute.main, page: () => MainPage())
   ];
 }

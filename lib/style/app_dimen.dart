@@ -5,6 +5,7 @@
 class AppDimen {
   const AppDimen._();
 
+  static const paddingSuperSmall = 2.0;
   static const paddingExtraSmall = 4.0;
   static const paddingSmall = 8.0;
   static const paddingMedium = 12.0;
@@ -40,6 +41,7 @@ class AppDimen {
   static const iconSizeExtraLarge = 24.0;
   static const iconSizeExtraLarge2 = 28.0;
   static const iconSizeMax = 48.0;
+  static const iconSizeMax2 = 56.0;
 
   static const radiusExtraSmall = 4.0;
   static const radiusSmall = 8.0;

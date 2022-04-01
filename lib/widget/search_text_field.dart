@@ -27,45 +27,44 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(AppDimen.paddingMedium),
-      child: Padding(
-          padding: const EdgeInsets.only(bottom: AppDimen.paddingMedium),
-          child: TextFormField(
-            style: AppTextStyle.regular(),
-            controller: textEditingController,
-            onChanged: onChanged,
-            onFieldSubmitted: onSearch,
-            textInputAction: textInputAction ?? TextInputAction.search,
-            decoration: InputDecoration(
-                isDense: true,
-                hintText: placeholder,
-                hintStyle: AppTextStyle.light(color: Colors.black26),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: AppColor.greyLight,
-                errorStyle: AppTextStyle.light(color: AppColor.red),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
-                  borderSide: const BorderSide(color: Colors.red),
-                ),
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppDimen.paddingMedium),
-                  child: suffixIcon ??
-                      const Icon(
-                        Icons.search,
-                        color: Colors.black45,
-                      ),
-                ),
-                suffixIconConstraints: const BoxConstraints(
-                  maxHeight: AppDimen.iconSizeMax,
-                  maxWidth: AppDimen.iconSizeMax,
-                )),
-          )),
+      color: Colors.white,
+      padding: const EdgeInsets.all(AppDimen.paddingMedium),
+      child: TextFormField(
+        style: AppTextStyle.regular(),
+        controller: textEditingController,
+        onChanged: onChanged,
+        onFieldSubmitted: onSearch,
+        textInputAction: textInputAction ?? TextInputAction.search,
+        decoration: InputDecoration(
+            isDense: true,
+            hintText: placeholder,
+            hintStyle: AppTextStyle.light(color: Colors.black26),
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
+              borderSide: BorderSide.none,
+            ),
+            filled: true,
+            fillColor: AppColor.greyLight,
+            errorStyle: AppTextStyle.light(color: AppColor.red),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
+            suffixIcon: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimen.paddingMedium),
+              child: suffixIcon ??
+                  const Icon(
+                    Icons.search,
+                    color: Colors.black45,
+                  ),
+            ),
+            suffixIconConstraints: const BoxConstraints(
+              maxHeight: AppDimen.iconSizeMax,
+              maxWidth: AppDimen.iconSizeMax,
+            )),
+      ),
     );
   }
 }

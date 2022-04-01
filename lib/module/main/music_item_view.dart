@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:itunes_music_preview/api/music/music_track_response.dart';
 import 'package:itunes_music_preview/common/app_assets.dart';
+import 'package:itunes_music_preview/style/app_color.dart';
 import 'package:itunes_music_preview/style/app_dimen.dart';
 import 'package:itunes_music_preview/style/app_text_style.dart';
 import 'package:itunes_music_preview/widget/app_text.dart';
+import 'package:lottie/lottie.dart';
 import 'package:skeletons/skeletons.dart';
 
 /// Created by rizkyagungramadhan@gmail.com
@@ -13,9 +15,14 @@ import 'package:skeletons/skeletons.dart';
 
 class MusicItemView extends StatelessWidget {
   final MusicTrackResponse item;
+  final bool isPlaying;
   final GestureTapCallback onPressed;
 
-  const MusicItemView({required this.item, required this.onPressed, Key? key})
+  const MusicItemView(
+      {required this.item,
+      required this.onPressed,
+      this.isPlaying = false,
+      Key? key})
       : super(key: key);
 
   @override
@@ -29,37 +36,61 @@ class MusicItemView extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             ///Album ArtWork
-            ClipRRect(
-                borderRadius: BorderRadius.circular(AppDimen.paddingMedium),
-                child: CachedNetworkImage(
-                  fadeInDuration: Duration.zero,
-                  fadeOutDuration: Duration.zero,
-                  fit: BoxFit.cover,
-                  imageUrl: item.trackArtWorkUrl,
-                  placeholder: (context, url) => const SkeletonAvatar(
-                    style: SkeletonAvatarStyle(
-                      width: double.infinity,
+            SizedBox(
+              width: AppDimen.iconSizeMax,
+              height: AppDimen.iconSizeMax,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppDimen.paddingMedium),
+                  child: CachedNetworkImage(
+                    fadeInDuration: Duration.zero,
+                    fadeOutDuration: Duration.zero,
+                    fit: BoxFit.cover,
+                    imageUrl: item.trackArtWorkUrl,
+                    placeholder: (context, url) => const SkeletonAvatar(
+                      style: SkeletonAvatarStyle(
+                        width: AppDimen.iconSizeMax,
+                        height: AppDimen.iconSizeMax,
+                      ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) =>
-                      Image.asset(AppAssets.noImage, fit: BoxFit.cover),
-                )),
+                    errorWidget: (context, url, error) =>
+                        Image.asset(AppAssets.noImage, fit: BoxFit.cover),
+                  )),
+            ),
 
             ///Song, Artist & Collection name
             const SizedBox(
               width: AppDimen.paddingMedium,
             ),
-            Column(
-              children: [
-                AppText(
-                  item.trackName,
-                  style: AppTextStyle.regular(size: AppDimen.fontLarge),
-                ),
-                const SizedBox(height: AppDimen.paddingMedium),
-                AppText(item.artistName),
-                const SizedBox(height: AppDimen.paddingMedium),
-                AppText(item.collectionName)
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(
+                    item.trackName,
+                    style: AppTextStyle.regular(size: AppDimen.fontLarge),
+                  ),
+                  AppText(item.artistName),
+                  AppText(item.collectionName)
+                ],
+              ),
+            ),
+
+            ///Beat Animation
+            if (isPlaying)
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                    maxHeight: AppDimen.iconSizeMax,
+                    maxWidth: AppDimen.iconSizeMax),
+                child: Lottie.asset(AppAssets.animationBeat),
+              ),
+            if (isPlaying) const SizedBox(width: AppDimen.paddingLarge),
+
+            ///Track Information
+            const Icon(
+              Icons.more_vert_rounded,
+              color: AppColor.accent,
+              size: AppDimen.iconSizeExtraLarge,
             )
           ],
         ),
