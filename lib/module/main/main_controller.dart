@@ -78,6 +78,12 @@ class MainController extends GetxController with AppController {
   /// @author rizkyagungramadhan@gmail.com on 02-Apr-2022, Sat, 14:24.
   playTrack(MusicTrackResponse item) async {
     try {
+
+      ///Restart track if user choose the same track
+      if((selectedMusic.value?.trackId ?? 0) == item.trackId) {
+        return await audioPlayer.seek(Duration.zero);
+      }
+
       ///Validate stream url availability
       if (item.previewStreamUrl.isNullOrEmpty) {
         throw AppException("Stream url for this track cannot be found");
