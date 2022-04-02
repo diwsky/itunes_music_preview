@@ -53,4 +53,5 @@ class AppDimen {
 
   static const sizeLoadingIndicator = 100.0;
   static const sizeHeaderImage = 120.0;
+  static const musicPlayerHeight = 140.0;
 }
