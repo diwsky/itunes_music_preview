@@ -32,79 +32,78 @@ class MusicItemView extends StatelessWidget {
       color:
           item.isStreamable ? Colors.transparent : CupertinoColors.systemGrey5,
       child: TapDebouncer(
-        // cooldown: const Duration(seconds: 1),
         onTap: onPressed,
         builder: (BuildContext context, Future<void> Function()? onTap) {
-        return InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(AppDimen.paddingMedium),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                ///Album ArtWork
-                SizedBox(
-                  width: AppDimen.iconSizeMax,
-                  height: AppDimen.iconSizeMax,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(AppDimen.paddingMedium),
-                      child: CachedNetworkImage(
-                        fadeInDuration: Duration.zero,
-                        fadeOutDuration: Duration.zero,
-                        fit: BoxFit.cover,
-                        imageUrl: item.trackArtWorkUrl,
-                        placeholder: (context, url) => const SkeletonAvatar(
-                          style: SkeletonAvatarStyle(
-                            width: AppDimen.iconSizeMax,
-                            height: AppDimen.iconSizeMax,
+          return InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(AppDimen.paddingMedium),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  ///Album ArtWork
+                  SizedBox(
+                    width: AppDimen.iconSizeMax,
+                    height: AppDimen.iconSizeMax,
+                    child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.circular(AppDimen.paddingMedium),
+                        child: CachedNetworkImage(
+                          fadeInDuration: Duration.zero,
+                          fadeOutDuration: Duration.zero,
+                          fit: BoxFit.cover,
+                          imageUrl: item.trackArtWorkUrl,
+                          placeholder: (context, url) => const SkeletonAvatar(
+                            style: SkeletonAvatarStyle(
+                              width: AppDimen.iconSizeMax,
+                              height: AppDimen.iconSizeMax,
+                            ),
                           ),
+                          errorWidget: (context, url, error) =>
+                              Image.asset(AppAssets.noImage, fit: BoxFit.cover),
+                        )),
+                  ),
+
+                  ///Song, Artist & Collection name
+                  const SizedBox(
+                    width: AppDimen.paddingMedium,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AppText(
+                          item.trackName,
+                          style: AppTextStyle.regular(size: AppDimen.fontLarge),
                         ),
-                        errorWidget: (context, url, error) =>
-                            Image.asset(AppAssets.noImage, fit: BoxFit.cover),
-                      )),
-                ),
-
-                ///Song, Artist & Collection name
-                const SizedBox(
-                  width: AppDimen.paddingMedium,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppText(
-                        item.trackName,
-                        style: AppTextStyle.regular(size: AppDimen.fontLarge),
-                      ),
-                      AppText(item.artistName),
-                      AppText(item.collectionName)
-                    ],
+                        AppText(item.artistName),
+                        AppText(item.collectionName)
+                      ],
+                    ),
                   ),
-                ),
 
-                ///Beat Animation
-                if (isPlaying)
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(
-                        maxHeight: AppDimen.iconSizeMax,
-                        maxWidth: AppDimen.iconSizeMax),
-                    child: Lottie.asset(AppAssets.animationBeat),
-                  ),
-                if (isPlaying) const SizedBox(width: AppDimen.paddingLarge),
+                  ///Beat Animation
+                  if (isPlaying)
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(
+                          maxHeight: AppDimen.iconSizeMax,
+                          maxWidth: AppDimen.iconSizeMax),
+                      child: Lottie.asset(AppAssets.animationBeat),
+                    ),
+                  if (isPlaying) const SizedBox(width: AppDimen.paddingLarge),
 
-                ///Track Information
-                const Icon(
-                  Icons.more_vert_rounded,
-                  color: AppColor.accent,
-                  size: AppDimen.iconSizeExtraLarge,
-                )
-              ],
+                  ///Track Information
+                  const Icon(
+                    Icons.more_vert_rounded,
+                    color: AppColor.accent,
+                    size: AppDimen.iconSizeExtraLarge,
+                  )
+                ],
+              ),
             ),
-          ),
-        );
-      },
-
+          );
+        },
       ),
     );
   }

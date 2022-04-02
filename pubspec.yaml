@@ -37,6 +37,7 @@ dependencies:
   connectivity: ^3.0.6
   json_annotation: ^4.4.0
   json_serializable: ^6.1.5
+  rxdart: ^0.27.3
 
   ## Device Utilities
   flutter_keyboard_visibility: ^5.2.0
@@ -45,11 +46,13 @@ dependencies:
   dio: ^4.0.6
 
   ## Widgets
-#  audio_video_progress_bar: ^0.10.0
+  audio_video_progress_bar: ^0.10.0
   cached_network_image: ^3.2.0
   just_audio: ^0.9.20
   lottie: ^1.2.2
+  marquee: ^2.2.1
   skeletons: ^0.0.3
+  tap_debouncer: ^2.0.2
 
 
   # The following adds the Cupertino Icons font to your application.

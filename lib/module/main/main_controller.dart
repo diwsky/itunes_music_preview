@@ -1,3 +1,4 @@
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:itunes_music_preview/api/music/music_track_request.dart';
 import 'package:itunes_music_preview/api/music/music_track_response.dart';
@@ -20,13 +21,22 @@ class MainController extends GetxController with AppController {
   Rxn<MusicTrackResponse> selectedMusic = Rxn<MusicTrackResponse>();
   final AudioPlayer audioPlayer = AudioPlayer();
 
-  ///TODO : Development purpose.
-  ///written by rizkyagungramadhan@gmail.com on 02-Apr-2022, Sat, 14:25.
+  ///Keyboard utility
+  var isKeyboardVisible = false.obs;
+  var keyboardVisibilityController = KeyboardVisibilityController();
+
 
   @override
   void onInit() {
-    search(artistName: "artistName");
+    attachKeyboardListener(keyboardVisibilityController, isKeyboardVisible);
+    search(artistName: "asking alexandria");
     super.onInit();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
   }
 
   /// Doc : Search music from iTunes API with given query [artistName].

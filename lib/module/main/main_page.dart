@@ -85,20 +85,23 @@ class MainPage extends StatelessWidget {
                 right: 0,
                 child: Obx(() {
                   final selectedMusic = _controller.selectedMusic.value;
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                      return ScaleTransition(scale: animation, child: child);
-                    },
-                    child: selectedMusic is MusicTrackResponse
-                        ? MusicPlayerView(
-                            audioPlayer: _controller.audioPlayer,
-                            item: selectedMusic,
-                            onStopOrPause: _controller.results.refresh,
-                            onPlay: _controller.results.refresh,
-                          )
-                        : const SizedBox.shrink(),
+                  return Visibility(
+                    visible: !_controller.isKeyboardVisible.value,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return ScaleTransition(scale: animation, child: child);
+                      },
+                      child: selectedMusic is MusicTrackResponse
+                          ? MusicPlayerView(
+                              audioPlayer: _controller.audioPlayer,
+                              item: selectedMusic,
+                              onStopOrPause: _controller.results.refresh,
+                              onPlay: _controller.results.refresh,
+                            )
+                          : const SizedBox.shrink(),
+                    ),
                   );
                 }))
           ],
