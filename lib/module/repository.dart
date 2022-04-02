@@ -4,6 +4,7 @@ import 'package:itunes_music_preview/api/music/music_api.dart';
 import 'package:itunes_music_preview/api/music/music_track_request.dart';
 import 'package:itunes_music_preview/api/music/music_track_response.dart';
 import 'package:itunes_music_preview/api/response_list.dart';
+import 'package:itunes_music_preview/api/url_setting.dart';
 
 /// Created by rizkyagungramadhan@gmail.com
 /// on 4/1/2022.
@@ -17,9 +18,10 @@ class Repository {
   factory Repository.initialize() {
     ///Initialize [DioClient] (only once) for API usage
     final dioInstance = Dio(BaseOptions(
-        baseUrl: "https://itunes.apple.com",
-        connectTimeout: 10 * 1000,
-        receiveTimeout: 10 * 1000,
+        baseUrl: UrlSetting.baseUrl,
+        connectTimeout: UrlSetting.maxConnectTimeOut,
+        receiveTimeout: UrlSetting.maxReceiveTimeOut,
+        sendTimeout: UrlSetting.maxSendTimeOut,
         receiveDataWhenStatusError: true,
         validateStatus: (status) => (status ?? 200) <= 503));
     final dioClient = DioClient(dioInstance);
