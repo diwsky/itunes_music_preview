@@ -9,7 +9,8 @@ class AppText extends StatelessWidget {
   final String text;
   final int maxLines;
   final TextStyle? style;
-  const AppText(this.text, {this.maxLines = 1, this.style, Key? key}) : super(key: key);
+  final TextAlign? textAlign;
+  const AppText(this.text, {this.maxLines = 1, this.style, this.textAlign, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class AppText extends StatelessWidget {
       maxLines: maxLines,
       style: style ?? AppTextStyle.light(),
       overflow: TextOverflow.ellipsis,
+      textAlign: textAlign,
     );
   }
 }
