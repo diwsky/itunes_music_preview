@@ -20,6 +20,8 @@ class MainController extends GetxController with AppController {
   Rxn<MusicTrackResponse> selectedMusic = Rxn<MusicTrackResponse>();
   final AudioPlayer audioPlayer = AudioPlayer();
 
+  ///TODO : Development purpose.
+  ///written by rizkyagungramadhan@gmail.com on 02-Apr-2022, Sat, 14:25.
 
   @override
   void onInit() {
@@ -27,6 +29,8 @@ class MainController extends GetxController with AppController {
     super.onInit();
   }
 
+  /// Doc : Search music from iTunes API with given query [artistName].
+  /// @author rizkyagungramadhan@gmail.com on 02-Apr-2022, Sat, 14:23.
   search({required String artistName}) async {
     try {
       ///Reset selected music
@@ -61,12 +65,25 @@ class MainController extends GetxController with AppController {
     }
   }
 
+  /// Doc : Play a song track. When already success initialized it will play automatically.
+  /// @author rizkyagungramadhan@gmail.com on 02-Apr-2022, Sat, 14:24.
   playTrack(MusicTrackResponse item) async {
     try {
+      ///Validate stream url availability
       if (item.previewStreamUrl.isNullOrEmpty) {
         throw AppException("Stream url for this track cannot be found");
       }
 
+      ///Reset previous selection (if exist) to null
+      if (selectedMusic.value is MusicTrackResponse) _updateSelectedMusic();
+
+      ///Check device internet connection
+      final isConnected = await checkConnection();
+      if (!isConnected) {
+        return showInformationSnackbar("No internet connection");
+      }
+
+      ///Prepare & configure audio source
       await audioPlayer.setAudioSource(
         AudioSource.uri(
           Uri.parse(item.previewStreamUrl!),
@@ -74,19 +91,30 @@ class MainController extends GetxController with AppController {
         initialPosition: Duration.zero,
         preload: true,
       );
+
+      ///Play track & update selection to current track
       audioPlayer.play();
       _updateSelectedMusic(item);
-
-    } on PlayerException catch (e) {
-      showInformationSnackbar(e.message);
-    } on PlayerInterruptedException catch (e) {
-      showInformationSnackbar(e.message);
+    } on PlayerException catch (error, stacktrace) {
+      _onPlayTrackError(error, stacktrace);
+    } on PlayerInterruptedException catch (error, stacktrace) {
+      _onPlayTrackError(error, stacktrace);
     } catch (error, stacktrace) {
-      showInformationSnackbar(error);
-      if (error is! AppException) AppErrorUtility.printInfo(stacktrace);
+      _onPlayTrackError(error, stacktrace);
     }
   }
 
+  /// Doc : Notify user when something went error when playing song track.
+  /// @author rizkyagungramadhan@gmail.com on 02-Apr-2022, Sat, 14:22.
+  _onPlayTrackError(error, stacktrace) {
+    audioPlayer.pause();
+    results.refresh();
+    showInformationSnackbar(error is PlayerException ? error.message : error);
+    if (error is! AppException) AppErrorUtility.printInfo(stacktrace);
+  }
+
+  /// Doc : Update current selected [MusicTrackResponse].
+  /// @author rizkyagungramadhan@gmail.com on 02-Apr-2022, Sat, 14:23.
   _updateSelectedMusic([MusicTrackResponse? item]) {
     selectedMusic.value = item;
     results.refresh();
