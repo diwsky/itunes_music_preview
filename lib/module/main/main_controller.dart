@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:itunes_music_preview/api/music/music_track_request.dart';
@@ -29,7 +30,7 @@ class MainController extends GetxController with AppController {
   @override
   void onInit() {
     attachKeyboardListener(keyboardVisibilityController, isKeyboardVisible);
-    search(artistName: "asking alexandria");
+    if(kDebugMode) search(artistName: "asking alexandria");
     super.onInit();
   }
 
@@ -43,8 +44,6 @@ class MainController extends GetxController with AppController {
   /// @author rizkyagungramadhan@gmail.com on 02-Apr-2022, Sat, 14:23.
   search({required String artistName}) async {
     try {
-      ///Reset selected music
-      _updateSelectedMusic();
 
       ///Prevent this function called repetitively
       if (appState.value == AppState.loading) return;
