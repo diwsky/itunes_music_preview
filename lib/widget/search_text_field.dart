@@ -27,7 +27,6 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
       padding: const EdgeInsets.all(AppDimen.paddingMedium),
       child: TextFormField(
         style: AppTextStyle.regular(),
