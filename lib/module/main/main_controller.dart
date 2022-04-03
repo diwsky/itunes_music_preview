@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:itunes_music_preview/api/music/music_track_request.dart';
@@ -26,7 +25,6 @@ class MainController extends GetxController with AppController {
   var isKeyboardVisible = false.obs;
   var keyboardVisibilityController = KeyboardVisibilityController();
 
-
   @override
   void onInit() {
     attachKeyboardListener(keyboardVisibilityController, isKeyboardVisible);
@@ -43,7 +41,6 @@ class MainController extends GetxController with AppController {
   /// @author rizkyagungramadhan@gmail.com on 02-Apr-2022, Sat, 14:23.
   search({required String artistName}) async {
     try {
-
       ///Prevent this function called repetitively
       if (appState.value == AppState.loading) return;
       appState.value = AppState.loading;
@@ -77,9 +74,8 @@ class MainController extends GetxController with AppController {
   /// @author rizkyagungramadhan@gmail.com on 02-Apr-2022, Sat, 14:24.
   playTrack(MusicTrackResponse item) async {
     try {
-
       ///Restart track if user choose the same track
-      if((selectedMusic.value?.trackId ?? 0) == item.trackId) {
+      if ((selectedMusic.value?.trackId ?? 0) == item.trackId) {
         return await audioPlayer.seek(Duration.zero);
       }
 
