@@ -1,6 +1,7 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:itunes_music_preview/style/app_dimen.dart';
 import 'package:itunes_music_preview/style/app_text_style.dart';
@@ -24,7 +25,7 @@ mixin AppController {
       .checkConnectivity()
       .then((result) => result != ConnectivityResult.none);
 
-  /// Doc : Avoid using with navigating to new page. Bcs snackbar loose his context.
+  /// Doc : Avoid using with navigating to new page. Bcs snackbar loose his context. Use [showToast] instead.
   /// @author rizkyagungramadhan@gmail.com on 01-Apr-2022, Fri, 18:10.
   showInformationSnackbar(dynamic message) {
     if (Get.isSnackbarOpen) return;
@@ -46,6 +47,8 @@ mixin AppController {
         ),
         margin: const EdgeInsets.only(bottom: AppDimen.paddingLarge));
   }
+
+  showToast(message) => Fluttertoast.showToast(msg: message.toString());
 
   /// Doc : Listen into changed Keyboard visibility state.
   /// [isKeyboardVisible] used for manage UI from [KeyboardVisibilityController] state which will be stored into [RxBool] observable object.

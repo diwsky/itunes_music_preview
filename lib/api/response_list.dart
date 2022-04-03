@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:itunes_music_preview/utility/app_exception.dart';
 import 'package:itunes_music_preview/utility/extension/string_ext.dart';
 import 'package:itunes_music_preview/utility/response_exception.dart';
@@ -8,16 +9,16 @@ import 'package:json_annotation/json_annotation.dart';
 part 'response_list.g.dart';
 
 @JsonSerializable(genericArgumentFactories: true)
-class ResponseList<T> {
+class ResponseList<T> extends Equatable{
   @JsonKey(name: "resultCount")
-  int? total;
+  final int? total;
   @JsonKey(name: "results")
-  List<T>? data;
-  String? status;
+  final List<T>? data;
+  final String? status;
   @JsonKey(name: "errorMessage")
-  String? message;
+  final String? message;
 
-  ResponseList({this.total = 0, required this.data, this.status, this.message});
+  const ResponseList({this.total = 0, required this.data, this.status, this.message});
 
   /// Doc : [response] should be [Map<String, dynamic>] for cast to be successful.
   /// @author rizkyagungramadhan@gmail.com on 01-Apr-2022, Fri, 16:55.
@@ -39,4 +40,7 @@ class ResponseList<T> {
       (status is int
           ? "Oops something went wrong with error code : $status"
           : "Unknown error");
+
+  @override
+  List<Object?> get props => [total, data, status, message];
 }

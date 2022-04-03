@@ -16,7 +16,7 @@ import 'package:just_audio/just_audio.dart';
 
 class MainController extends GetxController with AppController {
   final _repository = Get.find<Repository>();
-  RxList results = RxList<MusicTrackResponse>();
+  RxList<MusicTrackResponse> results = RxList<MusicTrackResponse>();
   RxBool isConnectionAvailable = true.obs;
   Rx<AppState> appState = AppState.idle.obs;
   Rxn<MusicTrackResponse> selectedMusic = Rxn<MusicTrackResponse>();
@@ -30,7 +30,6 @@ class MainController extends GetxController with AppController {
   @override
   void onInit() {
     attachKeyboardListener(keyboardVisibilityController, isKeyboardVisible);
-    if(kDebugMode) search(artistName: "asking alexandria");
     super.onInit();
   }
 

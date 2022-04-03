@@ -23,6 +23,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final searchTextController = TextEditingController();
+    DateTime backPressedDateTime = DateTime.now();
 
     return AppScreen(
         isUsingKeyboard: true,
@@ -32,6 +33,7 @@ class MainPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 SearchTextField(
+                  key: const Key("searchTextField"),
                   textEditingController: searchTextController,
                   placeholder: "Search by artist name",
                   onSearch: (artistName) =>
@@ -65,7 +67,8 @@ class MainPage extends StatelessWidget {
                               );
                             case AppState.failed:
                               return const PlaceholderWidget(
-                                      type: PlaceholderType.somethingWentWrong)
+                                      type:
+                                          PlaceholderType.somethingWentWrong)
                                   .asScrollable();
                             case AppState.completed:
                               return _buildMusicList();
@@ -91,7 +94,8 @@ class MainPage extends StatelessWidget {
                       duration: const Duration(milliseconds: 300),
                       transitionBuilder:
                           (Widget child, Animation<double> animation) {
-                        return ScaleTransition(scale: animation, child: child);
+                        return ScaleTransition(
+                            scale: animation, child: child);
                       },
                       child: selectedMusic is MusicTrackResponse
                           ? MusicPlayerView(

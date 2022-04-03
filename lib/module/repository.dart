@@ -16,15 +16,8 @@ class Repository {
   Repository();
 
   factory Repository.initialize() {
-    ///Initialize [DioClient] (only once) for API usage
-    final dioInstance = Dio(BaseOptions(
-        baseUrl: UrlSetting.baseUrl,
-        connectTimeout: UrlSetting.maxConnectTimeOut,
-        receiveTimeout: UrlSetting.maxReceiveTimeOut,
-        sendTimeout: UrlSetting.maxSendTimeOut,
-        receiveDataWhenStatusError: true,
-        validateStatus: (status) => (status ?? 200) <= 503));
-    final dioClient = DioClient(dioInstance);
+    ///Configure [Dio] instance inside [DioClient] factory constructor
+    final dioClient = DioClient.initialize();
 
     return Repository().._musicApi = MusicApi(dioClient);
   }

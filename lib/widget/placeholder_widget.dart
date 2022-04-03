@@ -9,10 +9,10 @@ import 'package:lottie/lottie.dart';
 /// on 4/1/2022.
 
 class PlaceholderWidget extends StatelessWidget {
-  final double? height;
+  final double? animationHeight;
   final PlaceholderType type;
 
-  const PlaceholderWidget({Key? key, this.height, required this.type})
+  const PlaceholderWidget({Key? key, this.animationHeight, required this.type})
       : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class PlaceholderWidget extends StatelessWidget {
       margin: const EdgeInsets.all(AppDimen.paddingExtraLarge4),
       child: Column(
         children: [
-          Lottie.asset(type.animationPath, height: height ?? Get.height / 4),
+          Lottie.asset(type.animationPath, height: animationHeight ?? Get.height / 4),
           const SizedBox(height: AppDimen.paddingExtraSmall),
           Text(
             type.description,
