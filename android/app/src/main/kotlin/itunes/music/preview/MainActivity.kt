@@ -1,4 +1,4 @@
-package com.example.itunes_music_preview
+package itunes.music.preview
 
 import io.flutter.embedding.android.FlutterActivity
 
