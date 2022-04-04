@@ -8,6 +8,7 @@
 import 'package:audio_session/audio_session_web.dart';
 import 'package:connectivity_for_web/connectivity_for_web.dart';
 import 'package:flutter_keyboard_visibility_web/flutter_keyboard_visibility_web.dart';
+import 'package:flutter_native_splash/flutter_native_splash_web.dart';
 import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:just_audio_web/just_audio_web.dart';
 
@@ -18,6 +19,7 @@ void registerPlugins(Registrar registrar) {
   AudioSessionWeb.registerWith(registrar);
   ConnectivityPlugin.registerWith(registrar);
   FlutterKeyboardVisibilityPlugin.registerWith(registrar);
+  FlutterNativeSplashWeb.registerWith(registrar);
   FluttertoastWebPlugin.registerWith(registrar);
   JustAudioPlugin.registerWith(registrar);
   registrar.registerMessageHandler();
