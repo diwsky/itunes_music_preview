@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:itunes_music_preview/module/main/main_page.dart';
+import 'package:itunes_music_preview/module/trackdetail/track_detail_page.dart';
 import 'package:itunes_music_preview/routes/app_route.dart';
 
 /// Created by rizkyagungramadhan@gmail.com
@@ -9,6 +10,7 @@ class AppPage {
   const AppPage._();
 
   static final routes = [
-    GetPage(name: AppRoute.main, page: () => MainPage())
+    GetPage(name: AppRoute.main, page: () => MainPage()),
+    GetPage(name: AppRoute.trackDetail, page: () => TrackDetailPage()),
   ];
 }

@@ -19,6 +19,7 @@ class App extends StatelessWidget {
       initialRoute: AppRoute.main,
       locale: Get.deviceLocale,
       getPages: AppPage.routes,
+      defaultTransition: Transition.rightToLeft,
     );
   }
 }

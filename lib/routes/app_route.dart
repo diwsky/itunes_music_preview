@@ -6,4 +6,5 @@ class AppRoute {
   const AppRoute._();
 
   static const main = "/main";
+  static const trackDetail = "/trackDetail";
 }
