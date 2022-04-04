@@ -28,7 +28,6 @@ class MainController extends GetxController with AppController {
   @override
   void onInit() {
     attachKeyboardListener(keyboardVisibilityController, isKeyboardVisible);
-    search(artistName: "asking alexandria");
     super.onInit();
   }
 
