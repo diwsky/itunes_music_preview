@@ -28,7 +28,13 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 android {
 
     signingConfigs {
-        config {
+        release {
+            storeFile file('./cert/key.jks')
+            storePassword 'itunes1@#'
+            keyAlias = 'key'
+            keyPassword 'itunes1@#'
+        }
+        debug {
             storeFile file('./cert/key.jks')
             storePassword 'itunes1@#'
             keyAlias = 'key'
@@ -58,11 +64,15 @@ android {
         targetSdkVersion sdk_version
         versionCode version_code
         versionName version_name
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.config
+            shrinkResources false
+            minifyEnabled false
+            signingConfig signingConfigs.release
         }
     }
 
