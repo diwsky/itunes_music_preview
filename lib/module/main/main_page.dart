@@ -25,91 +25,118 @@ class MainPage extends StatelessWidget {
     final searchTextController = TextEditingController();
     DateTime backPressedDateTime = DateTime.now();
 
-    return AppScreen(
-        isUsingKeyboard: true,
-        body: Stack(
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                SearchTextField(
-                  key: const Key("searchTextField"),
-                  textEditingController: searchTextController,
-                  placeholder: "Search by artist name",
-                  onSearch: (artistName) =>
-                      _controller.search(artistName: artistName),
-                ),
-
-                ///Observable Widgets
-                Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: () async => await _controller.search(
-                        artistName: searchTextController.text),
-                    child: Obx(() => (() {
-                          ///Manage state
-
-                          if (!_controller.isConnectionAvailable.value) {
-                            ///Return when no internet connection
-                            return const PlaceholderWidget(
-                                    type: PlaceholderType.noConnection)
-                                .asScrollable();
-                          }
-
-                          switch (_controller.appState.value) {
-                            case AppState.idle:
-                              return const PlaceholderWidget(
-                                  type: PlaceholderType.typeASearch);
-                            case AppState.loading:
-                              return const Center(
-                                child: CircularProgressIndicator(
-                                  color: AppColor.primary,
-                                ),
-                              );
-                            case AppState.failed:
-                              return const PlaceholderWidget(
-                                      type:
-                                          PlaceholderType.somethingWentWrong)
-                                  .asScrollable();
-                            case AppState.completed:
-                              return _buildMusicList();
-                            default:
-                              return const SizedBox.shrink();
-                          }
-                        }())),
+    return WillPopScope(
+      onWillPop: () async {
+        ///Prevent user from accidentally exit the App from back button
+        final isBackPressedTwice =
+            DateTime.now().difference(backPressedDateTime) >=
+                const Duration(seconds: 2);
+        backPressedDateTime = DateTime.now();
+        if (isBackPressedTwice) {
+          _controller.showToast("Press once more to exit");
+          return false;
+        }
+        return true;
+      },
+      child: AppScreen(
+          isUsingKeyboard: true,
+          body: Stack(
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SearchTextField(
+                    key: const Key("searchTextField"),
+                    textEditingController: searchTextController,
+                    placeholder: "Search by artist name",
+                    onSearch: (artistName) =>
+                        _controller.search(artistName: artistName),
                   ),
-                ),
-              ],
-            ),
 
-            ///Music Player
-            Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Obx(() {
-                  final selectedMusic = _controller.selectedMusic.value;
-                  return Visibility(
-                    visible: !_controller.isKeyboardVisible.value,
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder:
-                          (Widget child, Animation<double> animation) {
-                        return ScaleTransition(
-                            scale: animation, child: child);
-                      },
-                      child: selectedMusic is MusicTrackResponse
-                          ? MusicPlayerView(
-                              audioPlayer: _controller.audioPlayer,
-                              item: selectedMusic,
-                              onStopOrPause: _controller.results.refresh,
-                              onPlay: _controller.results.refresh,
-                            )
-                          : const SizedBox.shrink(),
+                  ///Observable Widgets
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () async => await _controller.search(
+                          artistName: searchTextController.text),
+                      child: Obx(() => (() {
+                            ///Manage state
+
+                            if (!_controller.isConnectionAvailable.value) {
+                              ///Return when no internet connection
+                              return const PlaceholderWidget(
+                                      type: PlaceholderType.noConnection)
+                                  .asScrollable();
+                            }
+
+                            switch (_controller.appState.value) {
+                              case AppState.idle:
+
+                                ///Return basic instruction when app first time start
+                                return const PlaceholderWidget(
+                                    type: PlaceholderType.typeASearch);
+                              case AppState.loading:
+
+                                ///Return existing list to prevent multiple CircularProgressIndicator in same screen
+                                if (_controller.results.isNotEmpty) {
+                                  return _buildMusicList();
+                                }
+
+                                ///CircularProgressIndicator in the center of the screen
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColor.primary,
+                                  ),
+                                );
+                              case AppState.failed:
+
+                                ///Return failed animation
+                                return const PlaceholderWidget(
+                                        type:
+                                            PlaceholderType.somethingWentWrong)
+                                    .asScrollable();
+                              case AppState.completed:
+
+                                ///Return a list when state was completed
+                                return _buildMusicList();
+                              default:
+                                return const SizedBox.shrink();
+                            }
+                          }())),
                     ),
-                  );
-                }))
-          ],
-        ));
+                  ),
+                ],
+              ),
+
+              ///Music Player
+              Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Obx(() {
+                    final selectedMusic = _controller.selectedMusic.value;
+                    return Visibility(
+                      visible: !_controller.isKeyboardVisible.value,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                          return ScaleTransition(
+                              scale: animation, child: child);
+                        },
+                        child: selectedMusic is MusicTrackResponse
+                            ? MusicPlayerView(
+                                audioPlayer: _controller.audioPlayer,
+                                item: selectedMusic,
+                                onStopOrPause: _controller.results.refresh,
+                                onPlay: _controller.results.refresh,
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                    );
+                  }))
+            ],
+          )),
+    );
   }
 
   Widget _buildMusicList() {
